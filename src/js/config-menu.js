@@ -158,12 +158,6 @@ var menu_template = `
 				<li><a class="trn dots" data-target="tools/color_zoom.color_zoom" href="#">Color Zoom</a></li>
 				<li><a class="trn dots" data-target="tools/replace_color.replace_color" href="#">Replace Color</a></li>
 				<li><a class="trn dots" data-target="tools/restore_alpha.restore_alpha" href="#">Restore alpha</a></li>
-				<li class="more">
-					<a class="trn" href="#">External</a>
-					<ul>
-						<li><a class="trn external" target="_blank" href="https://tinypng.com/">Compress PNG and JPEG</a>
-					</ul>
-				</li>
 				<li><div class="mid-line"></div></li>
 				<li><a class="trn dots" data-target="tools/settings.settings" href="#">Settings</a></li>	
 			</ul>
@@ -171,8 +165,7 @@ var menu_template = `
 		<li>
 			<a class="trn" href="#">Help</a>
 			<ul>
-				<li><a class="trn dots" data-target="help/shortcuts.shortcuts" href="#">Keyboard Shortcuts</a></li>
-				<li><a class="trn external" target="_blank" href="https://github.com/viliusle/miniPaint/issues">Report issues</a></li>				
+				<li><a class="trn dots" data-target="help/shortcuts.shortcuts" href="#">Keyboard Shortcuts</a></li>			
 				<li><div class="mid-line"></div></li>
 				<li><a class="trn dots" data-target="help/about.about" href="#">About</a></li>
 			</ul>
