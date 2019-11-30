@@ -11,7 +11,6 @@ import GUI_layers_class from './gui/gui-layers.js';
 import GUI_information_class from './gui/gui-information.js';
 import GUI_details_class from './gui/gui-details.js';
 import GUI_menu_class from './gui/gui-menu.js';
-import Help_translate_class from './../modules/help/translate.js';
 import Helper_class from './../libs/helpers.js';
 import alertify from './../../../node_modules/alertifyjs/build/alertify.min.js';
 
@@ -59,7 +58,6 @@ class Base_gui_class {
 		this.GUI_information = new GUI_information_class(this);
 		this.GUI_details = new GUI_details_class(this);
 		this.GUI_menu = new GUI_menu_class();
-		this.Help_translate = new Help_translate_class();
 		this.modules = {};
 	}
 
@@ -88,7 +86,7 @@ class Base_gui_class {
 		else {
 			config.TRANSPARENCY = false;
 		}
-		
+
 		//transparency_type
 		var transparency_type = this.Helper.getCookie('transparency_type');
 		if (transparency_type === null) {
@@ -115,7 +113,6 @@ class Base_gui_class {
 		this.load_saved_changes();
 
 		this.set_events();
-		this.load_translations();
 	}
 
 	set_events() {
@@ -221,21 +218,6 @@ class Base_gui_class {
 		}
 	}
 
-	load_translations() {
-		var lang = this.Helper.getCookie('language');
-		
-		//load from params
-		var params = this.Helper.get_url_parameters();
-		if(params.lang != undefined){
-			lang = params.lang.replace(/([^a-z]+)/gi, '');
-		}
-		
-		if (lang != null && lang != config.LANG) {
-			config.LANG = lang.replace(/([^a-z]+)/gi, '');
-			this.Help_translate.translate(config.LANG);
-		}
-	}
-
 	autodetect_dimensions() {
 		var wrapper = document.getElementById('main_wrapper');
 		var page_w = wrapper.clientWidth;
@@ -286,7 +268,7 @@ class Base_gui_class {
 			target.className = 'transparent-grid white';
 			return false;
 		}
-		else{
+		else {
 			target.className = 'transparent-grid ' + config.TRANSPARENCY_TYPE;
 		}
 		target.style.backgroundSize = (gap * 2) + 'px auto';
@@ -350,7 +332,7 @@ class Base_gui_class {
 			ctx.stroke();
 		}
 	}
-	
+
 	/**
 	 * change draw area size
 	 * 
@@ -362,7 +344,7 @@ class Base_gui_class {
 		config.HEIGHT = parseInt(height);
 		this.prepare_canvas();
 	}
-	
+
 	/**
 	 * 
 	 * @returns {object} keys: width, height
@@ -371,11 +353,11 @@ class Base_gui_class {
 		var wrapper = document.getElementById('main_wrapper');
 		var page_w = wrapper.clientWidth;
 		var page_h = wrapper.clientHeight;
-		
+
 		//find visible size in pixels, but make sure its correct even if image smaller then screen
 		var w = Math.min(Math.ceil(config.WIDTH * config.ZOOM), Math.ceil(page_w / config.ZOOM));
 		var h = Math.min(Math.ceil(config.HEIGHT * config.ZOOM), Math.ceil(page_h / config.ZOOM));
-		
+
 		return {
 			width: w,
 			height: h,
@@ -387,8 +369,8 @@ class Base_gui_class {
 	 * 
 	 * @param {string} theme_name
 	 */
-	change_theme(theme_name){
-		if(theme_name == undefined){
+	change_theme(theme_name) {
+		if (theme_name == undefined) {
 			//auto detect
 			var theme_cookie = this.Helper.getCookie('theme');
 			if (theme_cookie) {
@@ -399,8 +381,8 @@ class Base_gui_class {
 			}
 		}
 
-		for(var i in config.themes){
-			document.querySelector('body').classList.remove('theme-' +  config.themes[i]);
+		for (var i in config.themes) {
+			document.querySelector('body').classList.remove('theme-' + config.themes[i]);
 		}
 		document.querySelector('body').classList.add('theme-' + theme_name);
 	}

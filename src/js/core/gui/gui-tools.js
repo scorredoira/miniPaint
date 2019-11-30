@@ -5,7 +5,6 @@
 
 import config from './../../config.js';
 import Helper_class from './../../libs/helpers.js';
-import Help_translate_class from './../../modules/help/translate.js';
 import alertify from './../../../../node_modules/alertifyjs/build/alertify.min.js';
 
 var instance = null;
@@ -23,7 +22,6 @@ class GUI_tools_class {
 		instance = this;
 
 		this.Helper = new Helper_class();
-		this.Help_translate = new Help_translate_class();
 
 		//active tool
 		this.active_tool = 'brush';
@@ -336,11 +334,6 @@ class GUI_tools_class {
 			else {
 				alertify.error('Error: unsupported attribute type:' + typeof item + ', ' + k);
 			}
-		}
-
-		if (config.LANG != 'en') {
-			//retranslate
-			this.Help_translate.translate(config.LANG);
 		}
 	}
 

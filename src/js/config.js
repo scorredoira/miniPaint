@@ -197,21 +197,11 @@ config.TOOLS = [
 			power: 50,
 			bulge: true,
 		},
-	},
-	{
-		name: 'animation',
-		title: 'Play animation',
-		on_update: 'on_params_update',
-		on_leave: 'on_leave',
-		attributes: {
-			play: false,
-			delay: 400,
-		},
-	},
+	}
 ];
 
 //link to active tool
 config.TOOL = config.TOOLS[2];
 
-	
+
 export default config;

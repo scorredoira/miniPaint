@@ -42,7 +42,6 @@ import './../../css/popup.css';
 import app_config from './../config.js';
 import Base_layers_class from './../core/base-layers.js';
 import Base_gui_class from './../core/base-gui.js';
-import Help_translate_class from './../modules/help/translate.js';
 
 var instance = null;
 
@@ -85,7 +84,6 @@ class Dialog_class {
 		this.parameters = [];
 		this.Base_layers = new Base_layers_class();
 		this.Base_gui = new Base_gui_class();
-		this.Help_translate = new Help_translate_class();
 		this.last_params_hash = '';
 		this.layer_active_small = document.createElement("canvas");
 		this.layer_active_small_ctx = this.layer_active_small.getContext("2d");
@@ -205,7 +203,7 @@ class Dialog_class {
 
 		this.hide(true);
 	}
-	
+
 	//"Cancel" pressed
 	cancel() {
 		if (this.oncancel) {
@@ -377,9 +375,6 @@ class Dialog_class {
 			//prepare temp canvas
 			this.preview_handler();
 		}
-
-		//call translation again to translate popup
-		this.Help_translate.translate(app_config.LANG);
 	}
 
 	generateParamsHtml() {
