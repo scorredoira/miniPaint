@@ -7,6 +7,10 @@ var SCL = {
         if (img) {
             let fopen = new File_open_class();
             fopen.file_open_url_handler({ url: img })
+
+            if (img.indexOf("blob:") == 0) {
+                setTimeout(function () { URL.revokeObjectURL(img) }, 300)
+            }
         }
     },
     save(blob, fname) {
