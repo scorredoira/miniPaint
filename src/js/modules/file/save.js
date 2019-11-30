@@ -7,6 +7,8 @@ import canvasToBlob from './../../../../node_modules/blueimp-canvas-to-blob/js/c
 import filesaver from './../../../../node_modules/file-saver/FileSaver.min.js';
 import GIF from './../../libs/gifjs/gif.js';
 
+import SCL from './../../libs/scl.js';
+
 var instance = null;
 
 /** 
@@ -15,7 +17,7 @@ var instance = null;
  * @author ViliusL
  */
 class File_save_class {
-	
+
 	constructor() {
 		//singleton
 		if (instance) {
@@ -34,9 +36,9 @@ class File_save_class {
 			"PNG - Portable Network Graphics",
 			"JPG - JPG/JPEG Format",
 			"JSON - Full layers data", //aka PSD
-			"WEBP - Weppy File Format", //chrome only
-			"GIF - Graphics Interchange Format", //animated GIF
-			"BMP - Windows Bitmap", //firefox only
+			//"WEBP - Weppy File Format", //chrome only
+			//"GIF - Graphics Interchange Format", //animated GIF
+			//"BMP - Windows Bitmap", //firefox only
 		];
 	}
 
@@ -80,13 +82,13 @@ class File_save_class {
 		var settings = {
 			title: 'Save as',
 			params: [
-				{name: "name", title: "File name:", value: file_name},
-				{name: "type", title: "Save as type:", values: this.SAVE_TYPES, value: save_default},
-				{name: "quality", title: "Quality:", value: 90, range: [1, 100]},
-				{title: "File size:", html: '<span id="file_size">-</span>'},
-				{name: "calc_size", title: "Show file size:", value: calc_size_value},
-				{name: "layers", title: "Save layers:", values: ['All', 'Selected', 'Separated']},
-				{name: "delay", title: "Gif delay:", value: 400},
+				{ name: "name", title: "File name:", value: file_name },
+				{ name: "type", title: "Save as type:", values: this.SAVE_TYPES, value: save_default },
+				{ name: "quality", title: "Quality:", value: 90, range: [1, 100] },
+				{ title: "File size:", html: '<span id="file_size">-</span>' },
+				{ name: "calc_size", title: "Show file size:", value: calc_size_value },
+				{ name: "layers", title: "Save layers:", values: ['All', 'Selected', 'Separated'] },
+				{ name: "delay", title: "Gif delay:", value: 400 },
 			],
 			on_change: function (params, canvas_preview, w, h) {
 				_this.save_dialog_onchange();
@@ -98,7 +100,7 @@ class File_save_class {
 					for (var i in config.layers) {
 						if (config.layers[i].visible == false)
 							continue;
-						
+
 						this.Base_layers.select(config.layers[i].id);
 						_this.save_action(params, true);
 					}
@@ -146,7 +148,7 @@ class File_save_class {
 		var settings = {
 			title: 'Data URL',
 			params: [
-				{name: "url", title: "URL:", type: "textarea", value: data_url},
+				{ name: "url", title: "URL:", type: "textarea", value: data_url },
 			],
 		};
 		this.POP.show(settings);
@@ -302,7 +304,7 @@ class File_save_class {
 			//json
 			var data_json = this.export_as_json();
 
-			var blob = new Blob([data_json], {type: "text/plain"});
+			var blob = new Blob([data_json], { type: "text/plain" });
 			this.update_file_size(blob.size);
 		}
 		else if (type == 'GIF') {
@@ -310,7 +312,7 @@ class File_save_class {
 			this.update_file_size('-');
 		}
 	}
-	
+
 	/**
 	 * saves data in requested way
 	 * 
@@ -319,7 +321,7 @@ class File_save_class {
 	 */
 	save_action(user_response, autoname) {
 		var fname = user_response.name;
-		if(autoname === true && user_response.layers == 'Selected'){
+		if (autoname === true && user_response.layers == 'Selected') {
 			fname = config.layer.name;
 		}
 
@@ -361,7 +363,7 @@ class File_save_class {
 			//temp canvas
 			var canvas;
 			var ctx;
-			
+
 			//get data
 			if (user_response.layers == 'Selected' && type != 'GIF') {
 				canvas = this.Base_layers.convert_layer_to_canvas();
@@ -373,7 +375,7 @@ class File_save_class {
 				canvas.width = config.WIDTH;
 				canvas.height = config.HEIGHT;
 				this.disable_canvas_smooth(ctx);
-				
+
 				this.Base_layers.convert_layers_to_canvas(ctx);
 			}
 		}
@@ -398,6 +400,9 @@ class File_save_class {
 
 			//save using lib
 			canvas.toBlob(function (blob) {
+				if (SCL.save(blob, fname)) {
+					return
+				}
 				filesaver.saveAs(blob, fname);
 			});
 		}
@@ -407,6 +412,9 @@ class File_save_class {
 				fname = fname + ".jpg";
 
 			canvas.toBlob(function (blob) {
+				if (SCL.save(blob, fname)) {
+					return
+				}
 				filesaver.saveAs(blob, fname);
 			}, "image/jpeg", quality);
 		}
@@ -421,6 +429,9 @@ class File_save_class {
 				return false;
 
 			canvas.toBlob(function (blob) {
+				if (SCL.save(blob, fname)) {
+					return
+				}
 				filesaver.saveAs(blob, fname);
 			}, data_header, quality);
 		}
@@ -435,6 +446,9 @@ class File_save_class {
 				return false;
 
 			canvas.toBlob(function (blob) {
+				if (SCL.save(blob, fname)) {
+					return
+				}
 				filesaver.saveAs(blob, fname);
 			}, data_header);
 		}
@@ -445,7 +459,7 @@ class File_save_class {
 
 			var data_json = this.export_as_json();
 
-			var blob = new Blob([data_json], {type: "text/plain"});
+			var blob = new Blob([data_json], { type: "text/plain" });
 			//var data = window.URL.createObjectURL(blob); //html5
 			filesaver.saveAs(blob, fname);
 		}
@@ -477,22 +491,25 @@ class File_save_class {
 				}
 				this.Base_layers.convert_layers_to_canvas(ctx, config.layers[i].id);
 
-				gif.addFrame(ctx, {copy: true, delay: delay});
+				gif.addFrame(ctx, { copy: true, delay: delay });
 			}
 			gif.render();
 			gif.on('finished', function (blob) {
+				if (SCL.save(blob, fname)) {
+					return
+				}
 				filesaver.saveAs(blob, fname);
 			});
 		}
 	}
-	
+
 	fillCanvasBackground(ctx, color, width = config.WIDTH, height = config.HEIGHT) {
 		ctx.beginPath();
 		ctx.rect(0, 0, width, height);
 		ctx.fillStyle = color;
 		ctx.fill();
 	}
-	
+
 	check_format_support(canvas, data_header, show_error) {
 		var data = canvas.toDataURL(data_header);
 		var actualType = data.replace(/^data:([^;]*).*/, '$1');
@@ -506,7 +523,7 @@ class File_save_class {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * exports all layers to JSON
 	 */
@@ -577,7 +594,7 @@ class File_save_class {
 
 		return JSON.stringify(export_data, null, "\t");
 	}
-	
+
 	/**
 	 * removes smoothing, because it look ugly during zoom
 	 * 

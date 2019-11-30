@@ -172,25 +172,7 @@ var menu_template = `
 			<a class="trn" href="#">Help</a>
 			<ul>
 				<li><a class="trn dots" data-target="help/shortcuts.shortcuts" href="#">Keyboard Shortcuts</a></li>
-				<li><a class="trn external" target="_blank" href="https://github.com/viliusle/miniPaint/issues">Report issues</a></li>
-				<li class="more">
-					<a class="trn" href="#">Language</a>
-					<ul>
-						<li><a data-target="help/translate.translate.en" href="#">English</a>
-						<li><div class="mid-line"></div></li>
-						<li><a data-target="help/translate.translate.zh" href="#">简体中文）</a>
-						<li><a data-target="help/translate.translate.es" href="#">Español</a>
-						<li><a data-target="help/translate.translate.fr" href="#">French</a>	
-						<li><a data-target="help/translate.translate.de" href="#">German</a>	
-						<li><a data-target="help/translate.translate.it" href="#">Italiano</a>
-						<li><a data-target="help/translate.translate.ja" href="#">Japanese</a>
-						<li><a data-target="help/translate.translate.ko" href="#">Korean</a>		
-						<li><a data-target="help/translate.translate.lt" href="#">Lietuvių</a>
-						<li><a data-target="help/translate.translate.pt" href="#">Portuguese</a>	
-						<li><a data-target="help/translate.translate.ru" href="#">Russian</a>	
-						<li><a data-target="help/translate.translate.tr" href="#">Turkish</a>	
-					</ul>
-				</li>
+				<li><a class="trn external" target="_blank" href="https://github.com/viliusle/miniPaint/issues">Report issues</a></li>				
 				<li><div class="mid-line"></div></li>
 				<li><a class="trn dots" data-target="help/about.about" href="#">About</a></li>
 			</ul>
