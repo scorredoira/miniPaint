@@ -1,13 +1,24 @@
 
-
+import File_open_class from './../modules/file/open.js';
 
 var SCL = {
+    init() {
+        var img = getURLValue("img")
+        if (img) {
+            let fopen = new File_open_class();
+            fopen.file_open_url_handler({ url: img })
+        }
+    },
     save(blob, fname) {
-        var mode = getURLValue("saveMode")
-        switch (mode) {
-            case "inPlace":
-                window.parent.opener.imageEditCallback(blob, fname)
-                return true
+        var callback = getURLValue("callback")
+        if (callback) {
+            try {
+                exec("window.parent.opener." + callback, blob, fname)
+                window.close()
+            } catch (error) {
+                alert(error)
+            }
+            return true
         }
     }
 }
@@ -25,6 +36,21 @@ function getURLValue(paramName) {
         }
     }
     return null;
+}
+
+function exec(name, ...args) {
+    var parts = name.split('.');
+    var fn = window[parts[0]];
+    if (!fn) {
+        throw "Function does not exist: " + name
+    }
+    for (var i = 1; i < parts.length; i++) {
+        fn = fn[parts[i]];
+        if (!fn) {
+            throw "Function does not exist: " + name
+        }
+    }
+    return fn.apply(window, args);
 }
 
 

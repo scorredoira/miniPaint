@@ -37754,14 +37754,30 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _open = __webpack_require__(/*! ./../modules/file/open.js */ "./src/js/modules/file/open.js");
+
+var _open2 = _interopRequireDefault(_open);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SCL = {
+    init: function init() {
+        var img = getURLValue("img");
+        if (img) {
+            var fopen = new _open2.default();
+            fopen.file_open_url_handler({ url: img });
+        }
+    },
     save: function save(blob, fname) {
-        var mode = getURLValue("saveMode");
-        switch (mode) {
-            case "inPlace":
-                window.parent.opener.imageEditCallback(blob, fname);
-                return true;
+        var callback = getURLValue("callback");
+        if (callback) {
+            try {
+                exec("window.parent.opener." + callback, blob, fname);
+                window.close();
+            } catch (error) {
+                alert(error);
+            }
+            return true;
         }
     }
 };
@@ -37779,6 +37795,26 @@ function getURLValue(paramName) {
         }
     }
     return null;
+}
+
+function exec(name) {
+    var parts = name.split('.');
+    var fn = window[parts[0]];
+    if (!fn) {
+        throw "Function does not exist: " + name;
+    }
+    for (var i = 1; i < parts.length; i++) {
+        fn = fn[parts[i]];
+        if (!fn) {
+            throw "Function does not exist: " + name;
+        }
+    }
+
+    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+    }
+
+    return fn.apply(window, args);
 }
 
 exports.default = SCL;
@@ -38343,14 +38379,13 @@ var _baseState = __webpack_require__(/*! ./core/base-state.js */ "./src/js/core/
 
 var _baseState2 = _interopRequireDefault(_baseState);
 
+var _scl = __webpack_require__(/*! ./libs/scl.js */ "./src/js/libs/scl.js");
+
+var _scl2 = _interopRequireDefault(_scl);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * miniPaint - https://github.com/viliusle/miniPaint
- * author: Vilius L.
- */
-
-//css
+//js
 window.addEventListener('load', function (e) {
 	//initiate app
 	var Layers = new _baseLayers2.default();
@@ -38369,8 +38404,14 @@ window.addEventListener('load', function (e) {
 	GUI.render_main_gui();
 
 	Layers.init();
-}, false);
-//js
+
+	_scl2.default.init();
+}, false); /**
+            * miniPaint - https://github.com/viliusle/miniPaint
+            * author: Vilius L.
+            */
+
+//css
 
 /***/ }),
 

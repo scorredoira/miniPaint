@@ -15,6 +15,7 @@ import Base_gui_class from './core/base-gui.js';
 import Base_layers_class from './core/base-layers.js';
 import Base_tools_class from './core/base-tools.js';
 import Base_state_class from './core/base-state.js';
+import SCL from './libs/scl.js';
 
 window.addEventListener('load', function (e) {
 	//initiate app
@@ -34,4 +35,6 @@ window.addEventListener('load', function (e) {
 	GUI.render_main_gui();
 
 	Layers.init();
+
+	SCL.init();
 }, false);
