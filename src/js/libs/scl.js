@@ -1,5 +1,6 @@
 
 import File_open_class from './../modules/file/open.js';
+import File_save_class from './../modules/file/save.js';
 
 var SCL = {
     init() {
@@ -7,10 +8,13 @@ var SCL = {
         if (img) {
             let fopen = new File_open_class();
             fopen.file_open_url_handler({ url: img })
-
             if (img.indexOf("blob:") == 0) {
                 setTimeout(function () { URL.revokeObjectURL(img) }, 300)
             }
+        }
+
+        window.miniPaint_save = function () {
+            new File_save_class().save()
         }
     },
     save(blob, fname) {
